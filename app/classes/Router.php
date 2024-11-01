@@ -1,7 +1,5 @@
 <?php
 
-require_once 'app/core/Controller.php';
-
 class Router {
     private Controller $controller;
 

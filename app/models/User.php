@@ -1,7 +1,5 @@
 <?php
 
-require_once 'app/core/Model.php';
-
 class User {
     private array $users;
     private Model $model;

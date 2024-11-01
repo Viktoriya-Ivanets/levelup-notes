@@ -1,8 +1,5 @@
 <?php
 
-require_once 'app/classes/Session.php';
-require_once 'app/controllers/AuthController.php';
-
 class Controller
 {
     private AuthController $authController;

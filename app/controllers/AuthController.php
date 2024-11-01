@@ -1,8 +1,5 @@
 <?php
 
-require_once 'app/models/User.php';
-require_once 'app/classes/Session.php';
-
 class AuthController {
     /**
      * Handles user login.
