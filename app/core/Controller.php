@@ -3,10 +3,15 @@
 class Controller
 {
     private AuthController $authController;
+    private NoteController $noteController;
+    private ?string $username;
 
     public function __construct()
     {
+        Session::start();
+        $this->username = Session::get('username');
         $this->authController = new AuthController();
+        $this->noteController = new NoteController($this->username);
     }
 
     /**
@@ -24,15 +29,16 @@ class Controller
     }
 
     /**
-     * Index action that determines if the user is authenticated.
+     * Index action that checks if the user is authenticated and retrieves notes if they are.
      *
      * @return void
      */
     public function index(): void
     {
-        Session::start();
         if (Session::isAuthenticated()) {
-            $this->renderView('index', ['username' => Session::get('username')]);
+            $noteModel = new Note($this->username);
+            $notes = $noteModel->getAll();
+            $this->renderView('index', ['username' => $this->username, 'notes' => $notes]);
         } else {
             $this->login();
         }
@@ -59,12 +65,32 @@ class Controller
     }
 
     /**
-     * Redirects to the logout method.
+     * Redirects to the logout method in the AuthController.
      *
      * @return void
      */
     public function logout(): void
     {
         $this->authController->logout();
+    }
+
+    /**
+     * Handles the addition of a new note through the NoteController.
+     *
+     * @return void
+     */
+    public function add(): void
+    {
+        $this->noteController->add();
+    }
+
+    /**
+     * Handles the deletion of a note through the NoteController.
+     *
+     * @return void
+     */
+    public function delete(): void
+    {
+        $this->noteController->delete();
     }
 }
