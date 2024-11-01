@@ -7,8 +7,6 @@ class AuthController {
      * @return void
      */
     public function login(): void {
-        Session::start();
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->processLogin();
         } else {
@@ -41,8 +39,7 @@ class AuthController {
      */
     private function onLoginSuccess(string $username): void {
         Session::set('username', $username);
-        header("Location: " . Router::url('index'));
-        exit();
+        Router::redirect('index');
     }
 
     /**
@@ -102,8 +99,7 @@ class AuthController {
      * @return void
      */
     private function onRegistrationSuccess(): void {
-        header("Location: " . Router::url('login'));
-        exit();
+        Router::redirect('login');
     }
 
     /**
@@ -133,7 +129,6 @@ class AuthController {
     public function logout(): void {
         Session::start();
         Session::destroy();
-        header("Location: " . Router::url('login'));
-        exit();
+        Router::redirect('login');
     }
 }
