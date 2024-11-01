@@ -15,6 +15,11 @@ class Router {
     public function init(): void {
         $action = $this->getAction();
 
+        // Check authentication only for actions that require access
+        if (!Session::isAuthenticated() && !in_array($action, ['login', 'register'])) {
+            self::redirect('login');
+        }
+
         if (method_exists($this->controller, $action)) {
             $this->controller->$action();
         } else {
@@ -59,6 +64,7 @@ class Router {
      * @return never
      */
     public static function redirect(string $url): never {
+        $url = self::url($url);
         header('Location: ' . $url);
         exit();
     }
